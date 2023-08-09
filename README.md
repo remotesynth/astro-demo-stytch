@@ -1,13 +1,5 @@
-# Astro with Tailwind
+# CFP Tracker using Stytch
 
-```
-npm create astro@latest -- --template with-tailwindcss
-```
+This is a WIP of a conference session/CFP tracker built as an SSR site with Astro and using a combination of AppWrite cloud for the backend and Stytch for authentication.
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/with-tailwindcss)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/with-tailwindcss)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/with-tailwindcss/devcontainer.json)
-
-Astro comes with [Tailwind](https://tailwindcss.com) support out of the box. This example showcases how to style your Astro project with Tailwind.
-
-For complete setup instructions, please see our [Tailwind Integration Guide](https://docs.astro.build/en/guides/integrations-guide/tailwind).
+Note that many aspects aren't fully implemented in the code including handling authentication errors, redirecting all pages if the user is not logged in and consolidating the Stytch code into a library to allow reuse of the client.
