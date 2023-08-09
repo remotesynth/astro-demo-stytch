@@ -1,0 +1,68 @@
+---
+import BaseLayout from '../layouts/main.astro';
+import Login from '../components/Login.astro';
+import * as stytch from "stytch";
+
+let message = "";
+
+// TODO: move this to a lib
+const client = new stytch.Client({
+    project_id: import.meta.env.STYTCH_PROJECT_ID,
+    secret: import.meta.env.STYTCH_SECRET,
+    env: stytch.envs.test,
+});
+
+// handle the token
+let token = Astro.url.searchParams.get('token');
+if (token) {
+    try {
+        const res = await client.magicLinks
+        .authenticate({
+            token: token,
+            session_duration_minutes: 60 * 24,
+        })
+        if (res.status_code = 200) {
+            console.log("success")
+            Astro.cookies.set("stytch_session", res.session_token);
+            Astro.cookies.set("userid", res.user_id)
+            return Astro.redirect("/")
+        } else {
+            // TODO: handle the error
+            console.log(res)
+        }
+    } catch (error) {
+    if (error instanceof Error) {
+      alert(error.message);
+    }
+  }
+}
+
+// handle the form submission
+if (Astro.request.method === "POST") {
+  try {
+    const data = await Astro.request.formData();
+    const email = data.get("email")
+
+    const res = await client.magicLinks.email.loginOrCreate({
+        email: email
+    })
+    console.log(res);
+    if (res.status_code = 200) {
+        console.log("success")
+        message = "Check your email for a login link!"
+    } else {
+        // TODO: handle the error
+        console.log(res)
+    }
+
+  } catch (error) {
+    if (error instanceof Error) {
+      console.log(error);
+    }
+  }
+}
+---
+
+<BaseLayout title="Login">
+    <Login message={message} />
+</BaseLayout>

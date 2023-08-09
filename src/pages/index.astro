@@ -1,0 +1,47 @@
+---
+import BaseLayout from '../layouts/main.astro';
+import CFPCard from '../components/CFPCard.astro';
+import Button from '../components/Button.astro';
+import {getSessions} from '../lib/AppWrite.js';
+import * as stytch from "stytch";
+
+const userid = Astro.cookies.get("userid").value;
+const stytch_session = Astro.cookies.get("stytch_session").value;
+if (stytch_session) {
+	console.log("checking the login status")
+	// TODO: Move this to a lib
+	const client = new stytch.Client({
+		project_id: import.meta.env.STYTCH_PROJECT_ID,
+		secret: import.meta.env.STYTCH_SECRET,
+		env: stytch.envs.test,
+	});
+
+	const res = await client.sessions.authenticate({
+		session_token: stytch_session
+	})
+	if (res.status_code = 200) {
+		console.log("logged in");
+	}
+	else {
+		Astro.cookies.delete("stytch_session");
+		return Astro.redirect("/");
+	}
+}
+else {
+	return Astro.redirect("/authenticate");
+}
+
+const sessions = await getSessions(userid);
+---
+
+<BaseLayout title="My CFP Submissions">
+	<div class="w-36 m-4 float-right">
+		<Button url="/addSession">New Session</Button>
+	</div>
+	<h2
+		class="mb-4 text-3xl font-bold leading-tight tracking-tighter text-gray-700 md:text-5xl dark:text-gray-300">
+		Current Sessions</h2>
+	{
+		sessions.map((session) => (<CFPCard session={session} />))
+	}
+</BaseLayout>
