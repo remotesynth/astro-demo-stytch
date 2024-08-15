@@ -1,4 +1,4 @@
-import sdk from "node-appwrite";
+import sdk from 'node-appwrite';
 
 export const client = new sdk.Client();
 client
@@ -12,7 +12,7 @@ export const getSessions = async (userid) => {
   const sessions = await databases.listDocuments(
     import.meta.env.APPWRITE_DB_ID,
     import.meta.env.APPWRITE_SESSIONS_ID,
-    [sdk.Query.equal("userid", userid), sdk.Query.orderDesc("$createdAt")]
+    [sdk.Query.equal('userid', userid), sdk.Query.orderDesc('$createdAt')]
   );
   return sessions.documents;
 };
@@ -21,7 +21,7 @@ export const getSession = async (id) => {
   const session = await databases.listDocuments(
     import.meta.env.APPWRITE_DB_ID,
     import.meta.env.APPWRITE_SESSIONS_ID,
-    [sdk.Query.equal("$id", id)]
+    [sdk.Query.equal('$id', id)]
   );
   return session.documents[0];
 };
@@ -30,7 +30,7 @@ export const getCFPs = async (id) => {
   const cfp = await databases.listDocuments(
     import.meta.env.APPWRITE_DB_ID,
     import.meta.env.APPWRITE_CFP_ID,
-    [sdk.Query.equal("SessionID", id), sdk.Query.orderDesc("SubmissionDate")]
+    [sdk.Query.equal('SessionID', id), sdk.Query.orderDesc('SubmissionDate')]
   );
   return cfp.documents;
 };
